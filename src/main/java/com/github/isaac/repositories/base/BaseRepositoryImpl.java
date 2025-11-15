@@ -48,6 +48,7 @@ public class BaseRepositoryImpl<T, ID> implements BaseRepository<T, ID> {
             try {
                 transaction.begin();
                 em.persist(entity);
+                em.flush(); // garatizar el id antes del commit
                 transaction.commit();
             } catch (Exception e) {
                 if (transaction.isActive()) {
