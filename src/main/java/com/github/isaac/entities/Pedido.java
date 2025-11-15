@@ -48,6 +48,9 @@ public class Pedido {
     @CreationTimestamp
     private LocalDate fecha = LocalDate.now();
 
+    @Column(name = "estado", nullable = false, length = 20)
+    private String estado = "NO CONFIRMADO";
+
     @Valid
     @NotEmpty(message = "Un pedido debe tener al menos un detalle")
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
