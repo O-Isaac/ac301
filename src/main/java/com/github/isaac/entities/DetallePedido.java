@@ -2,9 +2,7 @@ package com.github.isaac.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,6 +11,9 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "detalles_pedido")
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DetallePedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
