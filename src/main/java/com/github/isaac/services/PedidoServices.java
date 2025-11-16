@@ -1,12 +1,15 @@
 package com.github.isaac.services;
 
+import com.github.isaac.dtos.ReporteVentasDto;
 import com.github.isaac.entities.*;
+import com.github.isaac.mappers.PedidoMapper;
 import com.github.isaac.repositories.PedidoRepository;
 import com.github.isaac.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,7 @@ public class PedidoServices {
         return detallePedido;
     }
 
+    // TODO: Moverlo a repository por que tiene operaciones con base de datos o modularizarlo es mejor?
     public Optional<Pedido> crearPedido(Cliente cliente, Empresa empresa, List<DetallePedido> detalles) {
         Pedido pedido = null;
 
@@ -60,6 +64,7 @@ public class PedidoServices {
         return Optional.ofNullable(pedido);
     }
 
+    // TODO: Moverlo a repository por que tiene operaciones con base de datos o modularizarlo es mejor?
     public boolean confirmarPedido(Long idPedido) {
         boolean confirmar = false;
 
@@ -114,4 +119,17 @@ public class PedidoServices {
 
         return confirmar;
     }
+
+
+    public List<ReporteVentasDto> reportesVentas() {
+        List<Pedido> pedidos = pedidoRepository.obtenerVentasLineasProductos();
+        PedidoMapper mapper = PedidoMapper.INSTANCE;
+
+        return pedidos
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
+
+
 }
