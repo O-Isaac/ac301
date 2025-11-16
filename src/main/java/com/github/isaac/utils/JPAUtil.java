@@ -7,7 +7,7 @@ import jakarta.persistence.Persistence;
 
 public class JPAUtil {
     // Nombre de la unidad de persistencia definida en persistence.xml
-    private static final String PERSISTENCE_UNIT_NAME = "Persistencia";
+    private static final String PERSISTENCE_UNIT_NAME = "VentasUnidadPersistencia";
 
     // Fábrica de EntityManagers (solo una por aplicación)
     private static EntityManagerFactory emf;
