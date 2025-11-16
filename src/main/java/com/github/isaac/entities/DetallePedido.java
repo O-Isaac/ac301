@@ -54,5 +54,4 @@ public class DetallePedido {
             subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
         }
     }
-
 }
