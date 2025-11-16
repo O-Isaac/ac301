@@ -3,9 +3,12 @@ package com.github.isaac.mappers;
 import com.github.isaac.dtos.ReporteVentasDto;
 import com.github.isaac.entities.Pedido;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.CDI)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PedidoMapper {
+    PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
+
     @Mapping(source = "lineas", target = "detalles")
     @Mapping(source = "cabeceraEmpresa", target = "empresa")
     @Mapping(source = "cabeceraCliente", target = "cliente")
