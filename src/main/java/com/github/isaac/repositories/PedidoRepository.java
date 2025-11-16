@@ -17,7 +17,12 @@ public class PedidoRepository extends BaseRepositoryImpl<Pedido, Long> {
     // JOIN FETCH evita consultas n+1
     public List<Pedido> obtenerPorClienteId(Long idCliente) {
         try (EntityManager em = JPAUtil.getEntityManager()) {
-            return em.createQuery("SELECT p FROM Pedido p JOIN FETCH p.cliente c WHERE c.id = :clienteId", Pedido.class)
+            return em.createQuery("""
+                   SELECT p FROM Pedido p
+                   JOIN FETCH p.cliente c
+                   JOIN FETCH p.empresa e
+                   WHERE c.id = :clienteId
+                   """, Pedido.class)
                     .setParameter("clienteId", idCliente)
                     .getResultList();
         }
@@ -31,9 +36,17 @@ public class PedidoRepository extends BaseRepositoryImpl<Pedido, Long> {
         }
     }
 
-    public void generaReporte() {
+    public List<Pedido> obtenerVentasLineasProductos() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
+            String jqpl = """
+                SELECT DISTINCT p FROM Pedido p
+                JOIN FETCH p.cliente
+                JOIN FETCH p.empresa
+                LEFT JOIN FETCH p.detalles d
+                LEFT JOIN FETCH d.producto
+                """;
 
+            return em.createQuery(jqpl, Pedido.class).getResultList();
         }
     }
 }
