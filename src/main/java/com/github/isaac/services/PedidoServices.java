@@ -38,6 +38,7 @@ public class PedidoServices {
                 pedido.setCliente(cliente);
                 pedido.setEmpresa(empresa);
                 pedido.setEstado("PENDIENTE");
+                pedido.setTotal(BigDecimal.ZERO);
 
                 for (DetallePedido detalle : detalles) {
                     pedido.addDetalle(detalle); // Establece la relación bidireccional y recalcula el subtotal

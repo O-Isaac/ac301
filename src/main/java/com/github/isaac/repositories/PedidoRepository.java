@@ -1,6 +1,6 @@
 package com.github.isaac.repositories;
 
-import com.github.isaac.entities.Pedido;
+import com.github.isaac.entities.*;
 import com.github.isaac.repositories.base.BaseRepositoryImpl;
 import com.github.isaac.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
@@ -30,4 +30,11 @@ public class PedidoRepository extends BaseRepositoryImpl<Pedido, Long> {
                     .getSingleResult();
         }
     }
+
+    public void generaReporte() {
+        try (EntityManager em = JPAUtil.getEntityManager()) {
+
+        }
+    }
 }
+
