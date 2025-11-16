@@ -48,17 +48,17 @@ INSERT INTO productos (codigo, nombre, descripcion, precio, stock) VALUES
                                                                        ('PROD020', 'Limpiador pantallas', 'Kit de limpieza con spray y paño microfibra', 9.99, 220);
 
 -- Insertar pedidos (10 registros)
-INSERT INTO pedidos (cliente_id, empresa_id, total, fecha) VALUES
-                                                               (1, 1, 295.97, '2024-03-15'),
-                                                               (2, 2, 179.99, '2024-05-22'),
-                                                               (3, 1, 485.95, '2024-01-08'),
-                                                               (4, 3, 155.48, '2024-07-14'),
-                                                               (5, 2, 324.97, '2024-02-28'),
-                                                               (6, 4, 89.99, '2024-06-03'),
-                                                               (7, 1, 567.94, '2024-04-19'),
-                                                               (8, 5, 215.98, '2024-09-11'),
-                                                               (9, 3, 142.49, '2024-08-25'),
-                                                               (10, 1, 399.96, '2024-10-07');
+INSERT INTO pedidos (cliente_id, empresa_id, total, fecha, estado) VALUES
+                                                               (1, 1, 295.97, '2024-03-15', 'PENDIENTE'),
+                                                               (2, 2, 179.99, '2024-05-22', 'PENDIENTE'),
+                                                               (3, 1, 485.95, '2024-01-08', 'COMPLETADO'),
+                                                               (4, 3, 155.48, '2024-07-14', 'CANCELADO'),
+                                                               (5, 2, 324.97, '2024-02-28', 'COMPLETADO'),
+                                                               (6, 4, 89.99, '2024-06-03', 'PENDIENTE'),
+                                                               (7, 1, 567.94, '2024-04-19', 'COMPLETADO'),
+                                                               (8, 5, 215.98, '2024-09-11', 'PENDIENTE'),
+                                                               (9, 3, 142.49, '2024-08-25', 'COMPLETADO'),
+                                                               (10, 1, 399.96, '2024-10-07', 'PENDIENTE');
 
 -- Insertar detalles de pedidos
 INSERT INTO detalles_pedido (pedido_id, producto_id, cantidad, precio_unitario, subtotal) VALUES
