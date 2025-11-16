@@ -1,20 +1,24 @@
 package com.github.isaac;
 
-import com.github.isaac.repositories.ClienteRepository;
-import com.github.isaac.repositories.EmpresaRepository;
-import com.github.isaac.repositories.PedidoRepository;
-import com.github.isaac.repositories.ProductoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.isaac.services.PedidoServices;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static void main(String[] args) {
-        ClienteRepository clienteRepository = new ClienteRepository();
-        EmpresaRepository empresaRepository = new EmpresaRepository();
-        PedidoRepository pedidoRepository = new PedidoRepository();
-        ProductoRepository productoRepository = new ProductoRepository();
+    static void main(String[] args) throws IOException {
+        PedidoServices pedidoServices = new PedidoServices();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.registerModule(new JavaTimeModule());
 
+        String json = objectMapper.writeValueAsString(Map.of("pedidos", pedidoServices.reportesVentas()));
+        Files.writeString(Path.of("reportes_ventas.json"), json);
     }
 }
