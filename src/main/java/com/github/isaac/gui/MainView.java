@@ -1,5 +1,8 @@
 package com.github.isaac.gui;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.github.isaac.gui.views.*;
 
 import javax.swing.*;
@@ -27,6 +30,9 @@ public class MainView extends JFrame {
     }
 
     static void main(String[] args) {
+        FlatLaf.registerCustomDefaultsSource("isaac.themes");
+        FlatMacDarkLaf.setup();
+
         SwingUtilities.invokeLater(() -> {
             MainView mainView = new MainView();
             mainView.initialize();
