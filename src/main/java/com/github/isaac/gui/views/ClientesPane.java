@@ -2,6 +2,7 @@ package com.github.isaac.gui.views;
 
 import com.github.isaac.entities.Cliente;
 import com.github.isaac.gui.components.ActionButtonsPanel;
+import com.github.isaac.gui.forms.FormCliente;
 import com.github.isaac.gui.models.ClienteTableModel;
 import com.github.isaac.repositories.ClienteRepository;
 
@@ -22,6 +23,23 @@ public class ClientesPane extends JPanel {
         JOptionPane.showMessageDialog(this, "Cliente eliminado");
     }
 
+    private void createCliente() {
+        FormCliente formCliente = new FormCliente();
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                formCliente,
+                "Crear Cliente",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            Cliente nuevoCliente = formCliente.getClienteFromForm();
+            System.out.println(nuevoCliente);
+        }
+    }
+
     private void actionHandler(ActionButtonsPanel.Action action) {
         if (table.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
@@ -31,7 +49,7 @@ public class ClientesPane extends JPanel {
         Cliente cliente = clienteTableModel.getClienteAt(table.getSelectedRow());
 
         switch (action) {
-            case INSERTAR -> JOptionPane.showMessageDialog(this, "Insertar cliente");
+            case INSERTAR -> createCliente();
             case EDITAR -> JOptionPane.showMessageDialog(this, "Editar cliente");
             case ELIMINAR -> deleteCliente(cliente);
         }

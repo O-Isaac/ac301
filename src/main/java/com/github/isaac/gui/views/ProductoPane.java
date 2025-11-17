@@ -2,6 +2,7 @@ package com.github.isaac.gui.views;
 
 import com.github.isaac.entities.Producto;
 import com.github.isaac.gui.components.ActionButtonsPanel;
+import com.github.isaac.gui.forms.FormProducto;
 import com.github.isaac.gui.models.ProductoTableModel;
 import com.github.isaac.repositories.ProductoRepository;
 
@@ -22,6 +23,23 @@ public class ProductoPane extends JPanel {
         JOptionPane.showMessageDialog(this, "Producto eliminado");
     }
 
+    private void createProducto() {
+        FormProducto formProducto = new FormProducto();
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                formProducto,
+                "Crear Producto",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            Producto nuevoProducto = formProducto.getProductoFromForm();
+            System.out.println(nuevoProducto);
+        }
+    }
+
     private void actionHandler(ActionButtonsPanel.Action action) {
         if (table.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla");
@@ -31,7 +49,7 @@ public class ProductoPane extends JPanel {
         Producto producto = productoTableModel.getProductoAt(table.getSelectedRow());
 
         switch (action) {
-            case INSERTAR -> JOptionPane.showMessageDialog(this, "Insertar producto");
+            case INSERTAR -> createProducto();
             case EDITAR -> JOptionPane.showMessageDialog(this, "Editar producto");
             case ELIMINAR -> deleteProducto(producto);
         }
