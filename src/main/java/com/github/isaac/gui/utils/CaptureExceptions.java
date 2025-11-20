@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintViolationException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Consumer;
 
 public class CaptureExceptions {
     public static void capture(Component parentComponent, Runnable action) {
