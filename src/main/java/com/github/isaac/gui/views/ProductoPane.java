@@ -1,65 +1,24 @@
 package com.github.isaac.gui.views;
 
-import com.github.isaac.entities.Producto;
 import com.github.isaac.gui.components.ActionButtonsPanel;
-import com.github.isaac.gui.forms.FormProducto;
-import com.github.isaac.gui.models.ProductoTableModel;
-import com.github.isaac.repositories.ProductoRepository;
+import com.github.isaac.gui.controllers.ProductoController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductoPane extends JPanel {
-    private final ProductoRepository productoRepository = new ProductoRepository();
-    private final ProductoTableModel productoTableModel = new ProductoTableModel(new ArrayList<>());
-    private final JTable table = new JTable(productoTableModel);
-
-    private void deleteProducto(Producto producto) {
-        productoRepository.delete(producto);
-        productoTableModel.setProductos(productoRepository.findAll());
-
-        JOptionPane.showMessageDialog(this, "Producto eliminado");
-    }
-
-    private void createProducto() {
-        FormProducto formProducto = new FormProducto();
-
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                formProducto,
-                "Crear Producto",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
-
-        if (result == JOptionPane.OK_OPTION) {
-            Producto nuevoProducto = formProducto.getProductoFromForm();
-            System.out.println(nuevoProducto);
-        }
-    }
+    private final ProductoController controller = new ProductoController(this);
 
     private void actionHandler(ActionButtonsPanel.Action action) {
-        if (table.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla");
-            return;
-        }
-
-        Producto producto = productoTableModel.getProductoAt(table.getSelectedRow());
-
         switch (action) {
-            case INSERTAR -> createProducto();
-            case EDITAR -> JOptionPane.showMessageDialog(this, "Editar producto");
-            case ELIMINAR -> deleteProducto(producto);
+            case INSERTAR -> controller.crearProducto();
+            case EDITAR -> controller.editarProducto();
+            case ELIMINAR -> controller.eliminarProducto();
         }
     }
 
     public ProductoPane() {
-        List<Producto> productos = productoRepository.findAll();
-        productoTableModel.setProductos(productos);
-
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(controller.getTable());
         scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         setLayout(new BorderLayout());

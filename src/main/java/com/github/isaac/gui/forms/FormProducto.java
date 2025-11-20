@@ -18,7 +18,17 @@ public class FormProducto extends JPanel {
         this.createLayout();
     }
 
+    // Nuevo constructor para edición
+    public FormProducto(Producto producto) {
+        this.setLayout(new GridLayout(3, 2, 10, 10));
+        this.createLayout(producto);
+    }
+
     public void createLayout() {
+        createLayout(null);
+    }
+
+    public void createLayout(Producto producto) {
         // ----- Código -----
         JPanel codigoPanel = new JPanel(new BorderLayout());
         codigoPanel.add(codigoField);
@@ -43,6 +53,14 @@ public class FormProducto extends JPanel {
         JPanel stockPanel = new JPanel(new BorderLayout());
         stockPanel.add(stockField);
         stockPanel.setBorder(BorderFactory.createTitledBorder("Stock"));
+
+        if (producto != null) {
+            codigoField.setText(producto.getCodigo());
+            nombreField.setText(producto.getNombre());
+            descripcionField.setText(producto.getDescripcion());
+            if (producto.getPrecio() != null) precioField.setText(producto.getPrecio().toString());
+            if (producto.getStock() != null) stockField.setText(producto.getStock().toString());
+        }
 
         // ---- Components Addition ----
         this.add(codigoPanel);
@@ -86,4 +104,3 @@ public class FormProducto extends JPanel {
         return producto;
     }
 }
-
