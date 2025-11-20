@@ -6,118 +6,59 @@ import com.github.isaac.mappers.PedidoMapper;
 import com.github.isaac.repositories.PedidoRepository;
 import com.github.isaac.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class PedidoServices {
     private final PedidoRepository pedidoRepository = new PedidoRepository();
 
+    public Pedido crearPedido(Cliente cliente, Empresa empresa, List<DetallePedido> detalles) {
+        Pedido pedido = new Pedido();
 
-    public DetallePedido crearDetallePedido(Producto producto, Integer cantidad) {
-        DetallePedido detallePedido = new DetallePedido();
+        pedido.setCliente(cliente);
+        pedido.setEmpresa(empresa);
+        pedido.setEstado("PENDIENTE");
+        pedido.setTotal(BigDecimal.ZERO);
 
-        detallePedido.setProducto(producto);
-        detallePedido.setCantidad(cantidad);
-        detallePedido.setPrecioUnitario(producto.getPrecio());
-        detallePedido.setSubtotal(producto.getPrecio().multiply(BigDecimal.valueOf(cantidad)));
-
-        return detallePedido;
-    }
-
-    // TODO: Moverlo a repository por que tiene operaciones con base de datos o modularizarlo es mejor?
-    public Optional<Pedido> crearPedido(Cliente cliente, Empresa empresa, List<DetallePedido> detalles) {
-        Pedido pedido = null;
-
-        try (EntityManager em = JPAUtil.getEntityManager()) {
-            var trasaction = em.getTransaction();
-
-            try {
-                trasaction.begin();
-
-                pedido = new Pedido();
-                pedido.setCliente(cliente);
-                pedido.setEmpresa(empresa);
-                pedido.setEstado("PENDIENTE");
-                pedido.setTotal(BigDecimal.ZERO);
-
-                for (DetallePedido detalle : detalles) {
-                    pedido.addDetalle(detalle); // Establece la relación bidireccional y recalcula el subtotal
-                }
-
-                em.persist(pedido);
-                em.flush();
-
-                trasaction.commit();
-            } catch (Exception ex) {
-                if (trasaction.isActive()) {
-                    trasaction.rollback();
-                }
-
-                System.out.println("Error al crear el pedido: " + ex.getMessage());
-            }
+        for (DetallePedido detalle : detalles) {
+            pedido.addDetalle(detalle); // Establece la relación bidireccional y recalcula el subtotal
         }
 
-        return Optional.ofNullable(pedido);
+        pedidoRepository.save(pedido);
+
+        return pedido;
     }
 
-    // TODO: Moverlo a repository por que tiene operaciones con base de datos o modularizarlo es mejor?
     public boolean confirmarPedido(Long idPedido) {
-        boolean confirmar = false;
-
         try (EntityManager em = JPAUtil.getEntityManager()) {
-            EntityTransaction transaction = em.getTransaction();
+            Pedido pedido = em.find(Pedido.class, idPedido);
 
-            try {
-                transaction.begin();
-
-                Pedido pedido = em.find(Pedido.class, idPedido);
-
-                if (pedido == null) {
-                    throw new Exception("Pedido no encontrado con ID: " + idPedido);
-                }
-
-                BigDecimal total = BigDecimal.ZERO;
-
-                for (DetallePedido detalle : pedido.getDetalles()) {
-                    Producto producto = detalle.getProducto();
-
-                    if (producto.getStock() < detalle.getCantidad()) {
-                        throw new Exception("Stock insuficiente para el producto: " + producto.getNombre());
-                    }
-
-                    producto.setStock(producto.getStock() - detalle.getCantidad());
-
-                    BigDecimal precio = producto.getPrecio();
-                    Integer cantidad = detalle.getCantidad();
-
-                    BigDecimal subtotal = precio.multiply(BigDecimal.valueOf(cantidad));
-                    detalle.setSubtotal(subtotal);
-
-                    total = total.add(subtotal);
-                }
-
-                pedido.setTotal(total);
-                pedido.setEstado("CONFIRMADO");
-
-                em.merge(pedido);
-                em.flush();
-
-                transaction.commit();
-                confirmar = true;
-            } catch (Exception ex) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                System.out.println("Error al confirmar el pedido: " + ex.getMessage());
+            if (pedido == null) {
+                System.err.println("Pedido no encontrado con ID: " + idPedido);
+                return false;
             }
+
+
+            List<DetallePedido> detalles = pedido.getDetalles();
+
+            for (DetallePedido detalle : detalles) {
+                Producto producto = detalle.getProducto();
+                Integer cantidadSolicitada = detalle.getCantidad();
+
+                if (producto.getStock() < cantidadSolicitada) {
+                    System.err.println("Stock insuficiente para el producto: " + producto.getNombre());
+                    return false;
+                }
+
+                producto.setStock(producto.getStock() - cantidadSolicitada);
+            }
+
+            pedido.setEstado("CONFIRMADO");
+            pedidoRepository.update(pedido);
         }
 
-        return confirmar;
+        return false;
     }
 
 
