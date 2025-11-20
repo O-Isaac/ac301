@@ -18,7 +18,16 @@ public class FormCliente extends JPanel {
         this.createLayout();
     }
 
+    public FormCliente(Cliente cliente) {
+        this.setLayout(new GridLayout(3,2 , 10,10));
+        this.createLayout(cliente);
+    }
+
     public void createLayout() {
+        createLayout(null);
+    }
+
+    public void createLayout(Cliente cliente) {
         // ----- Nombre -----
         JPanel nombrePanel = new JPanel(new BorderLayout());
         nombrePanel.add(nombreField);
@@ -48,6 +57,16 @@ public class FormCliente extends JPanel {
         JPanel direccionEnvioPanel = new JPanel(new BorderLayout());
         direccionEnvioPanel.add(direccionEnvioField);
         direccionEnvioPanel.setBorder(BorderFactory.createTitledBorder("Direccion de Envio"));
+
+        // ----- Campo clientes existentes -----
+        if (cliente != null) {
+            nombreField.setText(cliente.getNombre());
+            apellidoField.setText(cliente.getApellidos());
+            nifField.setText(cliente.getNif());
+            telefonoField.setText(cliente.getTelefono());
+            direccionField.setText(cliente.getDireccion());
+            direccionEnvioField.setText(cliente.getDireccionEnvio());
+        }
 
         // ---- Components Addition ----
         this.add(nombrePanel);

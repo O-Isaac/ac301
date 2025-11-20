@@ -18,7 +18,18 @@ public class FormEmpresa extends JPanel {
         this.createLayout();
     }
 
+    // Nuevo constructor para edición
+    public FormEmpresa(Empresa empresa) {
+        this.setLayout(new GridLayout(3, 2, 10, 10));
+        this.createLayout(empresa);
+    }
+
     public void createLayout() {
+        createLayout(null);
+    }
+
+    // Sobrecarga para permitir inicializar con datos existentes
+    public void createLayout(Empresa empresa) {
         // ----- CIF -----
         JPanel cifPanel = new JPanel(new BorderLayout());
         cifPanel.add(cifField);
@@ -48,6 +59,16 @@ public class FormEmpresa extends JPanel {
         JPanel emailPanel = new JPanel(new BorderLayout());
         emailPanel.add(emailField);
         emailPanel.setBorder(BorderFactory.createTitledBorder("Email"));
+
+        // Si viene una empresa para edición, poblar campos
+        if (empresa != null) {
+            cifField.setText(empresa.getCif());
+            telefonoField.setText(empresa.getTelefono());
+            nombreField.setText(empresa.getNombre());
+            localidadField.setText(empresa.getLocalidad());
+            domicilioField.setText(empresa.getDomicilio());
+            emailField.setText(empresa.getEmail());
+        }
 
         // ---- Components Addition ----
         this.add(cifPanel);
@@ -88,4 +109,3 @@ public class FormEmpresa extends JPanel {
         return empresa;
     }
 }
-
