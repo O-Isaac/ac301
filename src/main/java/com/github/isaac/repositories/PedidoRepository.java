@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class PedidoRepository extends BaseRepositoryImpl<Pedido, Long> {
     public PedidoRepository() {
@@ -49,5 +50,20 @@ public class PedidoRepository extends BaseRepositoryImpl<Pedido, Long> {
             return em.createQuery(jqpl, Pedido.class).getResultList();
         }
     }
-}
 
+    public Pedido findByIdWithDetalles(Long id) {
+        try (EntityManager em = JPAUtil.getEntityManager()) {
+            List<Pedido> result = em.createQuery("""
+                SELECT p FROM Pedido p
+                JOIN FETCH p.cliente
+                JOIN FETCH p.empresa
+                LEFT JOIN FETCH p.detalles d
+                LEFT JOIN FETCH d.producto
+                WHERE p.id = :id
+                """, Pedido.class)
+                .setParameter("id", id)
+                .getResultList();
+            return result.isEmpty() ? null : result.get(0);
+        }
+    }
+}

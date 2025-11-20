@@ -87,5 +87,4 @@ public class Pedido {
     private void beforeSave() {
         recalcularTotal();
     }
-
 }
