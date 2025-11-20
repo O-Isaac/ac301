@@ -6,12 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FormCliente extends JPanel {
-    private JTextField nombreField = new JTextField();
-    private JTextField apellidoField = new JTextField();
-    private JTextField telefonoField = new JTextField();
-    private JTextField direccionField = new JTextField();
-    private JTextField direccionEnvioField = new JTextField();
-    private JTextField nifField = new JTextField();
+    private final JTextField nombreField = new JTextField();
+    private final JTextField apellidoField = new JTextField();
+    private final JTextField telefonoField = new JTextField();
+    private final JTextField direccionField = new JTextField();
+    private final JTextField direccionEnvioField = new JTextField();
+    private final JTextField nifField = new JTextField();
 
     public FormCliente() {
         this.setLayout(new GridLayout(3,2 , 10,10));
