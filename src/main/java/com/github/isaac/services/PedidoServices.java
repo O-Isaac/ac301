@@ -30,6 +30,7 @@ public class PedidoServices {
         return pedido;
     }
 
+    // TODO: Cambiar error prints por excepciones personalizadas
     public boolean confirmarPedido(Long idPedido) {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             Pedido pedido = em.find(Pedido.class, idPedido);
@@ -39,6 +40,10 @@ public class PedidoServices {
                 return false;
             }
 
+            if (pedido.getEstado().equals("CONFIRMADO")) {
+                System.err.println("El pedido ya está confirmado.");
+                return false;
+            }
 
             List<DetallePedido> detalles = pedido.getDetalles();
 
@@ -58,7 +63,7 @@ public class PedidoServices {
             pedidoRepository.update(pedido);
         }
 
-        return false;
+        return true;
     }
 
 
