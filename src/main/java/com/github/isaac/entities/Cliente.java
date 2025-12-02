@@ -42,6 +42,9 @@ public class Cliente {
     @Column(name = "apellidos", nullable = false, length = 100)
     private String apellidos;
 
+    private String email;
+    private String ciudad;
+
     @NotBlank(message = "La dirección es obligatoria")
     @Size(max = 150, message = "La dirección no puede exceder 150 caracteres")
     @Column(name = "direccion", nullable = false, length = 150)
@@ -56,4 +59,10 @@ public class Cliente {
     @ToString.Exclude
     private Set<Pedido> pedidos = new HashSet<>();
 
+    @PreRemove
+    public void preRemove() {
+        for (Pedido pedido : pedidos) {
+            pedido.setCliente(null);
+        }
+    }
 }

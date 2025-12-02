@@ -49,6 +49,8 @@ public class Producto {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    private String categoria;
+
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<DetallePedido> detallePedidos = new ArrayList<>();

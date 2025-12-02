@@ -94,15 +94,14 @@ public class BaseRepositoryImpl<T, ID> implements BaseRepository<T, ID> {
             EntityTransaction transaction = em.getTransaction();
 
             try {
-                transaction.begin();
-
                 T entity = em.find(entityClass, id);
 
                 if (entity != null) {
+                    transaction.begin();
                     em.remove(entity);
+                    transaction.commit();
                 }
 
-                transaction.commit();
             } catch (Exception e) {
                 if (transaction.isActive()) {
                     transaction.rollback();

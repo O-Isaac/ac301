@@ -29,13 +29,13 @@ public class Pedido {
 
     @NotNull(message = "El cliente es obligatorio")
     @Valid
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
     @NotNull(message = "La empresa es obligatoria")
     @Valid
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 

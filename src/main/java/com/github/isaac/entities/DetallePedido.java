@@ -21,7 +21,7 @@ public class DetallePedido {
     private Long id;
 
     @NotNull(message = "El pedido es obligatorio")
-    @ManyToOne
+    @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     @ToString.Exclude
     private Pedido pedido;

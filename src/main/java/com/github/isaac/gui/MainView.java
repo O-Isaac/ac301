@@ -29,7 +29,7 @@ public class MainView extends JFrame {
         add(tabbedPane, BorderLayout.CENTER);
     }
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         FlatLaf.registerCustomDefaultsSource("isaac.themes");
         FlatMacDarkLaf.setup();
 
