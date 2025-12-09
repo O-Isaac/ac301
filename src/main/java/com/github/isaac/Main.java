@@ -3,6 +3,7 @@ package com.github.isaac;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.isaac.consultas.InformeVentasService;
 import com.github.isaac.entities.Cliente;
 import com.github.isaac.entities.Pedido;
 import com.github.isaac.entities.Producto;
@@ -166,10 +167,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        // retoOne("gam");
-        // retoTwo();
-        //retoThree("Periféricos");
-        // retoFour();
-        retoFive();
+        new InformeVentasService()
+                .moverProductosANuevoHistorico();
     }
 }
